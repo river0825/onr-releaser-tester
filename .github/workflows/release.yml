@@ -1,0 +1,29 @@
+
+name: Release Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      sprint_number:
+        description: 'Sprint number for this release'
+        required: true
+      major:
+        description: 'Major version number'
+        required: false
+        default: 'v2'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Release Action
+        uses: river0825/onr-releaser@v0.0.1
+        with:
+          sprint_number: ${{ github.event.inputs.sprint_number }}
+          major: ${{ github.event.inputs.major }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
